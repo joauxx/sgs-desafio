@@ -27,10 +27,11 @@ public interface SolicitacaoRepository extends JpaRepository<Solicitacao, Long> 
               AND (CAST(:dataInicio AS TIMESTAMP) IS NULL OR s.data_solicitacao >= CAST(:dataInicio AS TIMESTAMP))
               AND (CAST(:dataFim AS TIMESTAMP) IS NULL OR s.data_solicitacao <= CAST(:dataFim AS TIMESTAMP))
             """)
-    List<SolicitacaoListagemProjection> buscarSolicitacoesComFiltros(
+    org.springframework.data.domain.Page<SolicitacaoListagemProjection> buscarSolicitacoesComFiltros(
             @Param("status") String status,
             @Param("categoriaId") Long categoriaId,
             @Param("dataInicio") LocalDateTime dataInicio,
-            @Param("dataFim") LocalDateTime dataFim
+            @Param("dataFim") LocalDateTime dataFim,
+            org.springframework.data.domain.Pageable pageable
     );
 }
