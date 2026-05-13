@@ -35,12 +35,12 @@ public class SolicitacaoController {
     public ResponseEntity<SolicitacaoResponseDTO> criar(@Valid @RequestBody SolicitacaoCreateDTO dto) {
         Solicitacao solicitacao = converterParaEntidade(dto);
         Solicitacao solicitacaoSalva = solicitacaoService.criar(solicitacao);
-        
+
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")
                 .buildAndExpand(solicitacaoSalva.getId())
                 .toUri();
-                
+
         return ResponseEntity.created(uri).body(converterParaDTO(solicitacaoSalva));
     }
 
@@ -51,10 +51,10 @@ public class SolicitacaoController {
             @RequestParam(required = false) LocalDateTime dataInicio,
             @RequestParam(required = false) LocalDateTime dataFim,
             Pageable pageable) {
-            
+
         Page<SolicitacaoListagemProjection> solicitacoes = solicitacaoService.listarComFiltros(
                 status, categoriaId, dataInicio, dataFim, pageable);
-                
+
         return ResponseEntity.ok(solicitacoes);
     }
 
@@ -66,26 +66,28 @@ public class SolicitacaoController {
 
     @PatchMapping("/{id}/status")
     public ResponseEntity<Void> alterarStatus(
-            @PathVariable Long id, 
+            @PathVariable Long id,
             @Valid @RequestBody SolicitacaoStatusUpdateDTO dto) {
-            
+
         solicitacaoService.alterarStatus(id, dto.status());
         return ResponseEntity.noContent().build();
     }
 
     private Solicitacao converterParaEntidade(SolicitacaoCreateDTO dto) {
         Solicitante solicitante = solicitanteRepository.findById(dto.solicitanteId())
-                .orElseThrow(() -> new EntityNotFoundException("Solicitante não encontrado com ID: " + dto.solicitanteId()));
-                
+                .orElseThrow(
+                        () -> new EntityNotFoundException("Solicitante não encontrado com ID: " + dto.solicitanteId()));
+
         Categoria categoria = categoriaRepository.findById(dto.categoriaId())
-                .orElseThrow(() -> new EntityNotFoundException("Categoria não encontrada com ID: " + dto.categoriaId()));
+                .orElseThrow(
+                        () -> new EntityNotFoundException("Categoria não encontrada com ID: " + dto.categoriaId()));
 
         Solicitacao solicitacao = new Solicitacao();
         solicitacao.setSolicitante(solicitante);
         solicitacao.setCategoria(categoria);
         solicitacao.setDescricao(dto.descricao());
         solicitacao.setValor(dto.valor());
-        
+
         // Data e Status já têm valores padrão na Entidade
         return solicitacao;
     }
@@ -99,7 +101,6 @@ public class SolicitacaoController {
                 solicitacao.getDescricao(),
                 solicitacao.getValor(),
                 solicitacao.getDataSolicitacao(),
-                solicitacao.getStatus()
-        );
+                solicitacao.getStatus());
     }
 }
