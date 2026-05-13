@@ -22,8 +22,6 @@ public class GlobalExceptionHandler {
         return buildErrorResponse(HttpStatus.NOT_FOUND, "Not Found", ex.getMessage());
     }
 
-
-
     @ExceptionHandler(org.springframework.web.bind.MethodArgumentNotValidException.class)
     public ResponseEntity<Map<String, Object>> handleValidationExceptions(
             org.springframework.web.bind.MethodArgumentNotValidException ex) {
