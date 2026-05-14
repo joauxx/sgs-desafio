@@ -19,21 +19,31 @@ let modalInstance = null;
 
 // Inicialização
 document.addEventListener('DOMContentLoaded', () => {
-    carregarCategorias();
-    carregarSolicitantes();
-    carregarSolicitacoes();
-
-    // Event Listeners
-    filterForm.addEventListener('submit', (e) => {
-        e.preventDefault();
+    const aplicarFiltros = () => {
         const formData = new FormData(filterForm);
         const params = {
             status: formData.get('status'),
             categoriaId: formData.get('categoriaId'),
             dataInicio: formData.get('dataInicio'),
             dataFim: formData.get('dataFim'),
+            sort: formData.get('sort')
         };
         carregarSolicitacoes(params);
+    };
+
+    carregarCategorias();
+    carregarSolicitantes();
+    aplicarFiltros();
+
+    // Event Listeners
+    filterForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        aplicarFiltros();
+    });
+
+    document.getElementById('btn-limpar-filtros').addEventListener('click', () => {
+        filterForm.reset();
+        aplicarFiltros();
     });
 
     formNovaSolicitacao.addEventListener('submit', async (e) => {
