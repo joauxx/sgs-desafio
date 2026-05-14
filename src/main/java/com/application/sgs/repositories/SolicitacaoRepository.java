@@ -27,6 +27,15 @@ public interface SolicitacaoRepository extends JpaRepository<Solicitacao, Long> 
         AND (CAST(:categoriaId AS BIGINT) IS NULL OR s.categoria_id = CAST(:categoriaId AS BIGINT))
         AND (CAST(:dataInicio AS TIMESTAMP) IS NULL OR s.data_solicitacao >= CAST(:dataInicio AS TIMESTAMP))
         AND (CAST(:dataFim AS TIMESTAMP) IS NULL OR s.data_solicitacao <= CAST(:dataFim AS TIMESTAMP))
+      """, countQuery = """
+      SELECT count(s.id)
+      FROM solicitacao s
+      INNER JOIN solicitante sol ON s.solicitante_id = sol.id
+      INNER JOIN categoria cat ON s.categoria_id = cat.id
+      WHERE (CAST(:status AS VARCHAR) IS NULL OR s.status = CAST(:status AS VARCHAR))
+        AND (CAST(:categoriaId AS BIGINT) IS NULL OR s.categoria_id = CAST(:categoriaId AS BIGINT))
+        AND (CAST(:dataInicio AS TIMESTAMP) IS NULL OR s.data_solicitacao >= CAST(:dataInicio AS TIMESTAMP))
+        AND (CAST(:dataFim AS TIMESTAMP) IS NULL OR s.data_solicitacao <= CAST(:dataFim AS TIMESTAMP))
       """)
   org.springframework.data.domain.Page<SolicitacaoListagemProjection> buscarSolicitacoesComFiltros(
       @Param("status") String status,
