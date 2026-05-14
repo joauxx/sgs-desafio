@@ -87,30 +87,29 @@ Para demonstrar domínio de modelagem e consultas relacionais, o método `buscar
 
 ## Scripts de Banco de Dados (DDL e DML)
 
-Os scripts responsáveis pela estruturação e população inicial do banco de dados estão localizados em:
+Os scripts responsáveis pela estruturação e população inicial do banco de dados estão localizados no diretório de recursos da aplicação e são gerenciados automaticamente pelo Spring Boot:
 
+```text
 src/main/resources/
 ├── schema.sql
 └── data.sql
-schema.sql
+```
 
-Responsável pela criação completa da estrutura relacional da aplicação:
+#### **`schema.sql`**
+Responsável pela criação completa da estrutura relacional da aplicação, garantindo a integridade desde o primeiro boot:
+* **Estrutura:** Definição de tabelas, chaves primárias (PK) e chaves estrangeiras (FK).
+* **Constraints:** Implementação de regras de integridade (como `UNIQUE` para CPF/CNPJ) e índices.
+* **Relacionamentos:** Mapeamento físico das relações entre Solicitante, Categoria e Solicitação.
 
-tabelas;
-chaves primárias;
-foreign keys;
-constraints;
-índices;
-relacionamentos.
-data.sql
-
-Responsável pela carga inicial de dados utilizados para testes e execução imediata do sistema:
-
-categorias;
-solicitantes;
-registros auxiliares.
+#### **`data.sql`**
+Responsável pela carga inicial de dados (Seed), permitindo a execução e testes imediatos do sistema:
+* **Categorias:** Cadastro de tipos de pagamento (Ex: Serviços, Material, Transporte).
+* **Solicitantes:** População de usuários iniciais (mínimo de 5 registros conforme requisito).
+* **Solicitações** Dados Referentes a solicitações iniciais (mínimo de 5 registros conforme requisito).
 
 Ambos os arquivos são executados automaticamente durante a inicialização da aplicação pelo próprio Spring Boot, permitindo que o ambiente fique pronto para uso sem necessidade de intervenção manual no banco de dados.
+
+---
 
 ## Como Executar o Projeto (Guia Rápido de Onboarding)
 
